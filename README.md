@@ -16,11 +16,15 @@ Pulls all calculation information from cccbdb.nist.gov for the specified chemica
 
 `cd cccbdb-calculation-parser`
 
-`python setup.py develop`
+`pip install -r requirements.txt`
 
 * Run the script by supplying the following command line arguments
 
 `Syntax: python cccbdb.py [calculation] [formula] [deep/shallow]`
+
+* Run this other script if you want to parse a local html file downloaded from cccbdb.nist.gov
+
+`Syntax: python cccbdb2.py [calculation] [formula] [directory]`
 
 **The calculation name you get from the ccbdb url**  
 i.e. the calculation name for this url *http://cccbdb.nist.gov/polcalc1x.asp* is "polcalc"
