@@ -8,9 +8,13 @@ Pulls all calculation information from cccbdb.nist.gov for the specified chemica
 
 * Clone the repo to your machine
 
-`git clone git@github.com:marcelo-mason/cccbdb-calculation-parser.git && cd cccbdb-calculation-parser`
+`git clone https://github.com/jorge98vega/cccbdb-calculation-parser.git`
+
+`git clone git@github.com:jorge98vega/cccbdb-calculation-parser.git`
 
 * Install script dependencies
+
+`cd cccbdb-calculation-parser`
 
 `python setup.py develop`
 
