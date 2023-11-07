@@ -4,7 +4,7 @@ Pulls all calculation information from cccbdb.nist.gov for the specified chemica
 
 ## Setup
 
-* Install Python 3
+* Install Python 3 (Python 3.12.0)
 
 * Clone the repo to your machine
 
