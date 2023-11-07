@@ -5,18 +5,19 @@ import writer
 import constant
 import sys
 from bs4 import BeautifulSoup
+import pandas as pd
 
 
 def read(calculation, formula, directory='.'):
-    filename = directory + '/' + formula + '.' + calculation + '.html'
-    if not os.path.exists(filename):
-        sys.exit('File ' + filename + ' does not exist.')
+    filename = directory + '/' + formula + '.' + calculation
+    if not os.path.exists(filename + '.html'):
+        sys.exit('File ' + filename + '.html does not exist.')
 
     try:
         print('**** Extracting data')
 
         # find tables
-        with open(filename) as fp:
+        with open(filename + '.html') as fp:
             soup = BeautifulSoup(fp, 'html.parser')
         predefined = soup.find('table', attrs={'id': 'table1'})
         standard = soup.find('table', attrs={'id': 'table2'})
@@ -28,14 +29,13 @@ def read(calculation, formula, directory='.'):
         e_results = extract.complex(effective)
     except KeyboardInterrupt:
         sys.exit()
-    except:
+    except Exception as e:
+        print(e)
         print('**** Failed')
         sys.exit()
 
     # create file
-    file = open(os.path.join(os.getcwd(), directory + '/' + formula + '.' + calculation + '.txt'), 'w')
-
-    for result in (p_results + s_results + e_results):
-        writer.file_shallow(file, result)
-        writer.console(result)
-    file.close()
+    results = p_results + s_results + e_results
+    df = pd.DataFrame(results, columns=['method', 'basis', 'value'])
+    df.to_csv(filename + '.csv', index=False)
+    print('**** Done')

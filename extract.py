@@ -7,8 +7,8 @@ def simple(list):
     p.feed(str(list))
     for row in p.tables[0]:
         detail = {
-            'level': row[0][0],
-            'bond': row[1][0],
+            'method': row[0][0],
+            'value': row[1][0],
             'url': 'http://cccbdb.nist.gov/' + row[1][1] if len(row[1]) > 1 else ''
         }
         results.append(detail)
@@ -26,15 +26,15 @@ def complex(list):
     for row in p.tables[0]:
         # only lines with a level
         if len(row[0]) > 0:
-            level = row[0][0]
-            for index, bond in enumerate(row):
+            method = row[0][0]
+            for index, value in enumerate(row):
                 # only bond that have content
-                if len(bond) == 2:
+                if len(value) == 2:
                     detail = {
-                        'level': level,
+                        'method': method,
                         'basis': headers[index-1][0],
-                        'bond': bond[0],
-                        'url': 'http://cccbdb.nist.gov/' + bond[1]
+                        'value': value[0],
+                        'url': 'http://cccbdb.nist.gov/' + value[1]
                     }
                     results.append(detail)
     return results
