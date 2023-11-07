@@ -22,7 +22,7 @@ Pulls all calculation information from cccbdb.nist.gov for the specified chemica
 
 `Syntax: python cccbdb.py [calculation] [formula] [deep/shallow]`
 
-* Run this other script if you want to parse a local html file downloaded from cccbdb.nist.gov
+* Run this other script if you want to parse a local html file `directory/formula.calculation.html` downloaded from cccbdb.nist.gov
 
 `Syntax: python cccbdb2.py [calculation] [formula] [directory]`
 
