@@ -1,7 +1,7 @@
 URLS = {
-    'form': 'http://cccbdb.nist.gov/getformx.asp',
-    'dump': 'http://cccbdb.nist.gov/carttabdumpx.asp',
-    'dump2': 'http://cccbdb.nist.gov/tabdumpx.asp',
+    'form': 'https://cccbdb.nist.gov/getformx.asp',
+    'dump': 'https://cccbdb.nist.gov/carttabdumpx.asp',
+    'dump2': 'https://cccbdb.nist.gov/tabdumpx.asp',
 }
 
 
@@ -12,7 +12,7 @@ def headers(referer):
         'Content-Length': '26',
         'Pragma': 'no-cache',
         'Cache-Control': 'no-cache',
-        'Origin': 'http://cccbdb.nist.gov',
+        'Origin': 'https://cccbdb.nist.gov',
         'Upgrade-Insecure-Requests': '1',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
         'Content-Type': 'application/x-www-form-urlencoded',

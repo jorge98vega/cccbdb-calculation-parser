@@ -27,7 +27,7 @@ Pulls all calculation information from cccbdb.nist.gov for the specified chemica
 `Syntax: python cccbdb2.py [calculation] [formula] [directory]`
 
 **The calculation name you get from the ccbdb url**  
-i.e. the calculation name for this url *http://cccbdb.nist.gov/polcalc1x.asp* is "polcalc"
+i.e. the calculation name for this url *https://cccbdb.nist.gov/polcalc1x.asp* is "polcalc"
 
 *Examples:*
 

@@ -9,7 +9,7 @@ def simple(list):
         detail = {
             'method': row[0][0],
             'value': row[1][0],
-            'url': 'http://cccbdb.nist.gov/' + row[1][1] if len(row[1]) > 1 else ''
+            'url': 'https://cccbdb.nist.gov/' + row[1][1] if len(row[1]) > 1 else ''
         }
         results.append(detail)
     return results
@@ -34,7 +34,7 @@ def complex(list):
                         'method': method,
                         'basis': headers[index-1][0],
                         'value': value[0],
-                        'url': 'http://cccbdb.nist.gov/' + value[1]
+                        'url': 'https://cccbdb.nist.gov/' + value[1]
                     }
                     results.append(detail)
     return results

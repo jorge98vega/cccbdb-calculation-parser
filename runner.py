@@ -13,8 +13,8 @@ def run(calculation, formula, depth='shallow'):
         'submit1': 'Submit'
     }
 
-    url1 = 'http://cccbdb.nist.gov/%s1x.asp' % calculation
-    url2 = 'http://cccbdb.nist.gov/%s2x.asp' % calculation
+    url1 = 'https://cccbdb.nist.gov/%s1x.asp' % calculation
+    url2 = 'https://cccbdb.nist.gov/%s2x.asp' % calculation
 
     while True:
         try:
