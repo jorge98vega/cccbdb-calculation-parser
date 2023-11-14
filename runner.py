@@ -5,6 +5,7 @@ import writer
 import constant
 import sys
 from bs4 import BeautifulSoup
+import pandas as pd
 
 
 def run(calculation, formula, depth='shallow'):
@@ -44,19 +45,29 @@ def run(calculation, formula, depth='shallow'):
             e_results = extract.complex(effective)
         except KeyboardInterrupt:
             sys.exit()
-        except:
+        except Exception as e:
+            #print(e)
             print('**** Failed, retrying...')
             continue
         break
 
     # create file
-    file = open(os.path.join(os.getcwd(), formula + '.' + calculation + '.' + depth + '.txt'), 'w')
+    #file = open(os.path.join(os.getcwd(), formula + '.' + calculation + '.' + depth + '.txt'), 'w')
+    filename = formula + '.' + calculation
+
+    results = p_results + s_results + e_results
+    df = pd.DataFrame(results, columns=['method', 'basis', 'value'])
+    df.to_csv(filename + '.shallow.csv', index=False)
 
     # for each link in data
     if depth == 'deep':
         print('**** Fetching deep data')
 
-        for result in (p_results + s_results + e_results):
+        # create file
+        file = open(os.path.join(os.getcwd(), formula + '.' + calculation + '.' + depth + '.txt'), 'w')
+
+        #for result in (p_results + s_results + e_results):
+        for result in results:
             while True:
                 try:
                     # pull codes
@@ -71,15 +82,19 @@ def run(calculation, formula, depth='shallow'):
                     codes = soup.find('textarea').text
 
                     writer.file(file, result, codes)
-                    writer.console(result)
+                    #writer.console(result)
                 except KeyboardInterrupt:
                     sys.exit()
-                except:
+                except Exception as e:
+                    #print(e)
                     print('**** Failed, retrying...')
                     continue
                 break
-    else:
-        for result in (p_results + s_results + e_results):
-            writer.file_shallow(file, result)
-            writer.console(result)
-    file.close()
+        file.close()
+    #else:
+        #for result in (p_results + s_results + e_results):
+            #writer.file_shallow(file, result)
+            #writer.console(result)
+    #file.close()
+
+    print('**** Done')

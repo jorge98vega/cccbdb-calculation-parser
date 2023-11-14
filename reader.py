@@ -30,7 +30,7 @@ def read(calculation, formula, directory='.'):
     except KeyboardInterrupt:
         sys.exit()
     except Exception as e:
-        print(e)
+        #print(e)
         print('**** Failed')
         sys.exit()
 
@@ -38,4 +38,5 @@ def read(calculation, formula, directory='.'):
     results = p_results + s_results + e_results
     df = pd.DataFrame(results, columns=['method', 'basis', 'value'])
     df.to_csv(filename + '.csv', index=False)
+
     print('**** Done')
