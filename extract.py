@@ -38,3 +38,16 @@ def complex(list):
                     }
                     results.append(detail)
     return results
+
+
+def deep(list):
+    results = []
+    p = HTMLTableParser()
+    p.feed(str(list))
+    headers = p.tables[0][0]
+    for row in p.tables[0][1:]:
+        detail = {
+            key[0]: value[0] for (key, value) in zip(headers, row)
+        }
+        results.append(detail)
+    return results

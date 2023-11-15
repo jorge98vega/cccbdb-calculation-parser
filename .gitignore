@@ -5,6 +5,7 @@ __pycache__/
 *.egg-info*
 # output files
 *.csv
+*.json
 *.txt
 !requirements.txt
 tests/
