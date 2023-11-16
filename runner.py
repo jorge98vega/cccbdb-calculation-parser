@@ -6,7 +6,6 @@ import constant
 import sys
 from bs4 import BeautifulSoup
 import pandas as pd
-import json
 
 
 def run(calculation, formula, depth='shallow'):
@@ -53,6 +52,7 @@ def run(calculation, formula, depth='shallow'):
         break
 
     # create file
+    #file = open(os.path.join(os.getcwd(), formula + '.' + calculation + '.' + depth + '.txt'), 'w')
     filename = formula + '.' + calculation
 
     results = p_results + s_results + e_results
@@ -64,21 +64,25 @@ def run(calculation, formula, depth='shallow'):
         print('**** Fetching deep data')
 
         # create file
-        file = open(filename + '.deep.json', 'w', encoding='utf-8')
+        file = open(os.path.join(os.getcwd(), formula + '.' + calculation + '.' + depth + '.txt'), 'w')
 
+        #for result in (p_results + s_results + e_results):
         for result in results:
             while True:
                 try:
                     # pull codes
-                    res3 = session.get(result['url'])
+                    session.get(result['url'])
+                    res4 = session.post(constant.URLS['dump'])
 
-                    soup = BeautifulSoup(res3.content, 'html.parser')
-                    deep = soup.find_all('table', limit=2)[1]
+                    # try alternate dump url
+                    if res4.status_code == 500:
+                        res4 = session.post(constant.URLS['dump2'])
 
-                    d_results = extract.deep(deep)
+                    soup = BeautifulSoup(res4.content, 'html.parser')
+                    codes = soup.find('textarea').text
 
-                    result['deep'] = d_results
-                    json.dump(result, file, ensure_ascii=False, indent=4)
+                    writer.file(file, result, codes)
+                    #writer.console(result)
                 except KeyboardInterrupt:
                     sys.exit()
                 except Exception as e:
@@ -87,5 +91,10 @@ def run(calculation, formula, depth='shallow'):
                     continue
                 break
         file.close()
+    #else:
+        #for result in (p_results + s_results + e_results):
+            #writer.file_shallow(file, result)
+            #writer.console(result)
+    #file.close()
 
     print('**** Done')
