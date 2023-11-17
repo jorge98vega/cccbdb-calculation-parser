@@ -9,7 +9,7 @@ import pandas as pd
 import json
 
 
-def run(calculation, formula, depth='shallow'):
+def run(calculation, formula, depth='shallow', deep_filters='[{}]'):
     data = {
         'formula': formula,
         'submit1': 'Submit'
@@ -64,33 +64,37 @@ def run(calculation, formula, depth='shallow'):
         print('**** Fetching deep data')
 
         # create file
-        file = open(filename + '.deep.json', 'w', encoding='utf-8')
+        deep_file = open(filename + '.deep.json', 'w', encoding='utf-8')
 
-        for result in results:
-            while True:
-                try:
-                    # pull codes
-                    res3 = session.get(result['url'])
-                    res4 = session.post(constant.URLS['dump'])
+        deep_filters = json.loads(deep_filters)
+        for deep_filter in deep_filters:
+            partial_results = [{key: result[key] for key in result if key in deep_filter} for result in results]
+            filtered_results = [result for result, partial_result in zip(results, partial_results) if partial_result == deep_filter]
+            for result in filtered_results:
+                while True:
+                    try:
+                        # pull codes
+                        res3 = session.get(result['url'])
+                        res4 = session.post(constant.URLS['dump'])
 
-                    # try alternate dump url
-                    if res4.status_code == 500:
-                        res4 = session.post(constant.URLS['dump2'])
+                        # try alternate dump url
+                        if res4.status_code == 500:
+                            res4 = session.post(constant.URLS['dump2'])
 
-                    soup = BeautifulSoup(res4.content, 'html.parser')
-                    codes = soup.find('textarea').text
+                        soup = BeautifulSoup(res4.content, 'html.parser')
+                        codes = soup.find('textarea').text
 
-                    clean_codes = os.linesep.join([s for s in codes.splitlines() if s.strip()])
-                    dic = {key: result[key] for key in result if key != 'url'}
-                    dic['deep'] = clean_codes
-                    json.dump(dic, file, ensure_ascii=False, indent=4)
-                except KeyboardInterrupt:
-                    sys.exit()
-                except Exception as e:
-                    #print(e)
-                    print('**** Failed, retrying...')
-                    continue
-                break
-        file.close()
+                        clean_codes = os.linesep.join([s for s in codes.splitlines() if s.strip()])
+                        dic = {key: result[key] for key in result if key != 'url'}
+                        dic['deep'] = clean_codes
+                        json.dump(dic, deep_file, ensure_ascii=False, indent=4)
+                    except KeyboardInterrupt:
+                        sys.exit()
+                    except Exception as e:
+                        #print(e)
+                        print('**** Failed, retrying...')
+                        continue
+                    break
+        deep_file.close()
 
     print('**** Done')

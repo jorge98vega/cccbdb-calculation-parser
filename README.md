@@ -18,28 +18,34 @@ Pulls all calculation information from cccbdb.nist.gov for the specified chemica
 
 `pip install -r requirements.txt`
 
+## Usage
+
 * Run the script by supplying the following command line arguments
 
-`Syntax: python cccbdb.py [calculation] [formula] [deep/shallow]`
+`python cccbdb.py CALCULATION FORMULA [DEPTH] [DEEP_FILTERS]`
 
-* Run this other script if you want to parse a local html file `directory/formula.calculation.html` downloaded from cccbdb.nist.gov
+* Run this other script if you want to parse a local html file `DIRECTORY/FORMULA.CALCULATION.html` downloaded from cccbdb.nist.gov
 
-`Syntax: python cccbdb2.py [calculation] [formula] [directory]`
+`Syntax: python cccbdb2.py CALCULATION FORMULA [DIRECTORY]`
 
-**The calculation name you get from the ccbdb url**  
+**You get the calculation name from the ccbdb url**  
 i.e. the calculation name for this url *https://cccbdb.nist.gov/polcalc1x.asp* is "polcalc"
 
-*Examples:*
-
-`python cccbdb.py geom CH4 deep`
+## Examples
 
 `python cccbdb.py dipole CH4 shallow`
 
+`python cccbdb.py geom CH4 deep`
+
+`python cccbdb.py geom CH4 deep '[{"method": "LSDA"}, {"method": "BLYP"}]'`
+
+`python cccbdb.py geom CH4 deep '[{"method": "LSDA", "basis": "6-31G"}]'`
+
 Deep will go into the bond and pull out the components, shallow will not.
 
-* The script will run through extracting the data and outputting status to the console.  It will create a text file in your current path with the output.
+* The script will run through extracting the data.  It will create the outputs files in your current path with the output.
 
-# Screenshots
+## Screenshots
 
 ![Console](screenshots/console.jpg)
 
