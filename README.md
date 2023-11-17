@@ -26,7 +26,7 @@ Pulls all calculation information from cccbdb.nist.gov for the specified chemica
 
 * Run this other script if you want to parse a local html file `DIRECTORY/FORMULA.CALCULATION.html` downloaded from cccbdb.nist.gov
 
-`Syntax: python cccbdb2.py CALCULATION FORMULA [DIRECTORY]`
+`python cccbdb2.py CALCULATION FORMULA [DIRECTORY]`
 
 **You get the calculation name from the ccbdb url**  
 i.e. the calculation name for this url *https://cccbdb.nist.gov/polcalc1x.asp* is "polcalc"
