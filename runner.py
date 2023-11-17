@@ -6,6 +6,7 @@ import constant
 import sys
 from bs4 import BeautifulSoup
 import pandas as pd
+import json
 
 
 def run(calculation, formula, depth='shallow'):
@@ -52,7 +53,6 @@ def run(calculation, formula, depth='shallow'):
         break
 
     # create file
-    #file = open(os.path.join(os.getcwd(), formula + '.' + calculation + '.' + depth + '.txt'), 'w')
     filename = formula + '.' + calculation
 
     results = p_results + s_results + e_results
@@ -64,14 +64,13 @@ def run(calculation, formula, depth='shallow'):
         print('**** Fetching deep data')
 
         # create file
-        file = open(os.path.join(os.getcwd(), formula + '.' + calculation + '.' + depth + '.txt'), 'w')
+        file = open(filename + '.deep.json', 'w', encoding='utf-8')
 
-        #for result in (p_results + s_results + e_results):
         for result in results:
             while True:
                 try:
                     # pull codes
-                    session.get(result['url'])
+                    res3 = session.get(result['url'])
                     res4 = session.post(constant.URLS['dump'])
 
                     # try alternate dump url
@@ -81,8 +80,10 @@ def run(calculation, formula, depth='shallow'):
                     soup = BeautifulSoup(res4.content, 'html.parser')
                     codes = soup.find('textarea').text
 
-                    writer.file(file, result, codes)
-                    #writer.console(result)
+                    clean_codes = os.linesep.join([s for s in codes.splitlines() if s.strip()])
+                    dic = {key: result[key] for key in result if key != 'url'}
+                    dic['deep'] = clean_codes
+                    json.dump(dic, file, ensure_ascii=False, indent=4)
                 except KeyboardInterrupt:
                     sys.exit()
                 except Exception as e:
@@ -91,10 +92,5 @@ def run(calculation, formula, depth='shallow'):
                     continue
                 break
         file.close()
-    #else:
-        #for result in (p_results + s_results + e_results):
-            #writer.file_shallow(file, result)
-            #writer.console(result)
-    #file.close()
 
     print('**** Done')
