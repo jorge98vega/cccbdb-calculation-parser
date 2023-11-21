@@ -42,7 +42,7 @@ class HTMLTableParser(HTMLParser):
 
         if tag in ['td', 'th']:
             if self.ignore is False:
-                self._current_row.append(self._current_cell[::-1])
+                self._current_row.append(self._current_cell[:2][::-1])
             self._current_cell = []
             self.ignore = False
         elif tag == 'tr':
