@@ -38,3 +38,17 @@ def complex(list):
                     }
                     results.append(detail)
     return results
+
+
+def deep(list):
+    results = []
+    p = HTMLTableParser()
+    p.feed(str(list))
+    headers = p.tables[0][0]
+    for row in p.tables[0][1:]:
+        if len(row) > 0:
+            detail = {
+                key[0]: value[0] for (key, value) in zip(headers, row) if len(value[0]) > 0
+            }
+            results.append(detail)
+    return results

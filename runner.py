@@ -75,18 +75,26 @@ def run(calculation, formula, depth='shallow', deep_filters='[{}]'):
                     try:
                         # pull codes
                         res3 = session.get(result['url'])
-                        res4 = session.post(constant.URLS['dump'])
+                        
+                        if calculation in ['dipole']:
+                            # dipole calculation
+                            soup = BeautifulSoup(res3.content, 'html.parser')
+                            deep_table = soup.find_all('table', limit=2)[1]
+                            deep_results = extract.deep(deep_table)
+                        else:
+                            # calculations with 'carttabdumpx.asp' or 'tabdumpx.asp' actions
+                            res4 = session.post(constant.URLS['dump'])
+                            # try alternate dump url
+                            if res4.status_code == 500:
+                                res4 = session.post(constant.URLS['dump2'])
 
-                        # try alternate dump url
-                        if res4.status_code == 500:
-                            res4 = session.post(constant.URLS['dump2'])
+                            soup = BeautifulSoup(res4.content, 'html.parser')
+                            codes = soup.find('textarea').text
+                            clean_codes = os.linesep.join([s for s in codes.splitlines() if s.strip()])
+                            deep_results = clean_codes
 
-                        soup = BeautifulSoup(res4.content, 'html.parser')
-                        codes = soup.find('textarea').text
-
-                        clean_codes = os.linesep.join([s for s in codes.splitlines() if s.strip()])
                         dic = {key: result[key] for key in result if key != 'url'}
-                        dic['deep'] = clean_codes
+                        dic['deep'] = deep_results
                         json.dump(dic, deep_file, ensure_ascii=False, indent=4)
                     except KeyboardInterrupt:
                         sys.exit()
