@@ -48,7 +48,7 @@ def deep(list):
     for row in p.tables[0][1:]:
         if len(row) > 0:
             detail = {
-                key[0]: value[0] for (key, value) in zip(headers, row) if len(value[0]) > 0
+                key[0]: value[0] for (key, value) in zip(headers, row)
             }
             results.append(detail)
     return results
