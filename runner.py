@@ -65,6 +65,7 @@ def run(calculation, formula, depth='shallow', deep_filters='[{}]'):
 
         # create file
         deep_file = open(filename + '.deep.json', 'w', encoding='utf-8')
+        dic_list = []
 
         deep_filters = json.loads(deep_filters)
         for deep_filter in deep_filters:
@@ -95,7 +96,7 @@ def run(calculation, formula, depth='shallow', deep_filters='[{}]'):
 
                         dic = {key: result[key] for key in result if key != 'url'}
                         dic['deep'] = deep_results
-                        json.dump(dic, deep_file, ensure_ascii=False, indent=4)
+                        dic_list.append(dic)
                     except KeyboardInterrupt:
                         sys.exit()
                     except Exception as e:
@@ -103,6 +104,7 @@ def run(calculation, formula, depth='shallow', deep_filters='[{}]'):
                         print('**** Failed, retrying...')
                         continue
                     break
+        json.dump(dic_list, deep_file, ensure_ascii=False, indent=4)
         deep_file.close()
 
     print('**** Done')
